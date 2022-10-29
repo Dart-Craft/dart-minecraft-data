@@ -11,3 +11,6 @@ pubspec.lock
 data.js
 .vscode
 data.dart
+
+# Ignore generated files, 
+lib/src/generated/generated_minecraft_data.g.dart
