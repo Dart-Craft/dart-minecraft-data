@@ -1,9 +1,9 @@
-import 'package:minecraft_data/minecraft_data.dart';
-import 'package:minecraft_data/utils.dart';
+import 'package:minecraft_data/indexing_utils.dart';
 
 List<dynamic> features =
-    Utils.readJson('../minecraft-data/data/pc/common/features.json');
-Map<String, dynamic> get nameToFeature => Utils.sortBykey(features, 'name');
+    IndexingUtils.readJson('../minecraft-data/data/pc/common/features.json');
+Map<String, dynamic> get nameToFeature =>
+    IndexingUtils.sortBykey(features, 'name');
 
 isFeatureInRange(String featureName, MinecraftVersion versionObj) {
   // Check if feature exists

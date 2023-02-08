@@ -1,5 +1,3 @@
-import 'package:minecraft_data/minecraft_data.dart';
-
 class MinecraftVersion {
   int version = 0;
   String minecraftVersion = "";

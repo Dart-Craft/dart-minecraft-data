@@ -5,17 +5,26 @@ import 'dart:typed_data';
 class JsonArchiveCodec {
   Future<String> encode(Directory dir) async {
     Map<String, String> jsonArchive = {};
-    await dir.list(recursive: true).forEach((file) async {
-      print(file.path);
-      if (file is! File) return;
+    await for (var file in dir.list(recursive: true)) {
+      print("Packaging ${file.path}");
+      if (file is! File) continue;
       Uint8List bytes = await file.readAsBytes();
-      jsonArchive[file.path] = base64.encode(GZipCodec().encode(bytes));
-    });
-    return JsonEncoder().convert(jsonArchive);
+      String path = file.path.replaceAll("\\", "/");
+      jsonArchive[path] = base64.encode(GZipCodec().encode(bytes));
+      print("Added a path $path");
+    }
+    // await dir.list(recursive: true).forEach((file) async {
+    //   print("Packaging ${file.path}");
+    //   if (file is! File) return;
+    //   Uint8List bytes = await file.readAsBytes();
+    //   jsonArchive[file.path.replaceAll("\\", "/")] =
+    //       base64.encode(GZipCodec().encode(bytes));
+    // });
+    return jsonEncode(jsonArchive);
   }
 
   Map<String, Uint8List> decodeToMap(String archiveString) {
-    Map<String, dynamic> map = JsonDecoder().convert(archiveString);
+    Map<String, dynamic> map = jsonDecode(archiveString);
     Map<String, Uint8List> resultMap = {};
     for (MapEntry entry in map.entries) {
       resultMap[entry.key] =
